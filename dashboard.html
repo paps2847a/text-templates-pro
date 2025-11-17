@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Templates Pro - Dashboard</title>
+    <link href="lib/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="lib/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid p-4" style="min-height: 100vh;">
+        <!-- Encabezado con título y botón de configuración -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-0"><i class="bi bi-file-text"></i> Text Templates Pro</h2>
+                <small class="text-muted">Gestión completa de plantillas</small>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Configuración">
+                <i class="bi bi-gear"></i> Configuración
+            </button>
+        </div>
+
+        <!-- Barra de búsqueda y botón de agregar -->
+        <div class="row mb-4 g-2">
+            <div class="col-md-8">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input 
+                        type="text" 
+                        class="form-control border-start-0" 
+                        id="searchInput" 
+                        placeholder="Buscar por título, palabra clave o descripción..."
+                    >
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="bi bi-plus-circle"></i> Agregar Plantilla
+                </button>
+            </div>
+        </div>
+
+        <!-- Contenedor de cards de plantillas -->
+        <div id="templatesContainer" class="row g-3">
+            <div class="col-12 text-center text-muted py-5">
+                <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+                <p class="mt-3">No hay plantillas guardadas</p>
+                <p class="small">Haz clic en "Agregar Plantilla" para comenzar</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Crear Plantilla -->
+    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="createModalLabel">
+                        <i class="bi bi-plus-circle"></i> Nueva Plantilla
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createTemplateForm">
+                        <div class="mb-3">
+                            <label for="templateTitle" class="form-label">Título <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="templateTitle" placeholder="Ej: Saludo Formal" required>
+                            <small class="text-muted">Nombre descriptivo de la plantilla</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="templateKeyword" class="form-label">Palabra Clave <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">/</span>
+                                <input type="text" class="form-control" id="templateKeyword" placeholder="saludo" required>
+                            </div>
+                            <small class="text-muted">Usa esta palabra clave para invocar la plantilla (sin espacios)</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="templateDescription" class="form-label">Descripción</label>
+                            <input type="text" class="form-control" id="templateDescription" placeholder="Descripción breve (opcional)">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="templateContent" class="form-label">Contenido de la Plantilla <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="templateContent" rows="6" placeholder="Escribe el contenido de la plantilla aquí..." required></textarea>
+                            <small class="text-muted">Este es el texto que se insertará cuando uses /palabra</small>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Guardar Plantilla
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Editar Plantilla -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title" id="editModalLabel">
+                        <i class="bi bi-pencil-square"></i> Editar Plantilla
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editTemplateForm">
+                        <div class="mb-3">
+                            <label for="editTitle" class="form-label">Título <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editTitle" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editKeyword" class="form-label">Palabra Clave <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">/</span>
+                                <input type="text" class="form-control" id="editKeyword" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editDescription" class="form-label">Descripción</label>
+                            <input type="text" class="form-control" id="editDescription">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="editContent" class="form-label">Contenido de la Plantilla <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="editContent" rows="6" required></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-check-circle"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Ver Plantilla -->
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="viewModalLabel">
+                        <i class="bi bi-eye"></i> Ver Plantilla
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 id="viewTitle" class="mb-3"></h6>
+                    <div class="mb-3">
+                        <strong>Palabra Clave:</strong>
+                        <br>
+                        <code id="viewKeyword" class="d-inline-block mt-1"></code>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Descripción:</strong>
+                        <br>
+                        <span id="viewDescription" class="text-muted"></span>
+                    </div>
+                    <hr>
+                    <div>
+                        <strong>Contenido:</strong>
+                        <div id="viewContent" class="bg-light p-3 rounded mt-2" style="white-space: pre-wrap; word-wrap: break-word; max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Configuración -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title" id="settingsModalLabel">
+                        <i class="bi bi-gear"></i> Configuración
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="enableDelay">
+                        <label class="form-check-label" for="enableDelay">
+                            <strong>Activar retraso en el reemplazo</strong>
+                        </label>
+                        <small class="text-muted d-block mt-1">Si esta desactivado, el reemplazo sera inmediato. Si esta activado, puedes configurar el tiempo de espera.</small>
+                    </div>
+
+                    <div class="mb-3" id="delayTimeContainer" style="display: none;">
+                        <label for="delayTime" class="form-label">Tiempo de espera para reemplazo (ms)</label>
+                        <input type="number" class="form-control" id="delayTime" min="50" max="5000" step="50" value="150">
+                        <small class="text-muted">Tiempo de inactividad antes de reemplazar el texto (50-5000ms)</small>
+                    </div>
+
+                    <hr class="my-3">
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="enableNotifications" checked>
+                        <label class="form-check-label" for="enableNotifications">
+                            Mostrar notificaciones al reemplazar texto
+                        </label>
+                    </div>
+
+                    <hr>
+
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-outline-primary" id="exportTemplates">
+                            <i class="bi bi-download"></i> Exportar Plantillas
+                        </button>
+                        <button type="button" class="btn btn-outline-info" id="importTemplates">
+                            <i class="bi bi-upload"></i> Importar Plantillas
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" id="clearAllTemplates">
+                            <i class="bi bi-trash"></i> Eliminar Todas las Plantillas
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="saveSettings">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input oculto para importar archivos -->
+    <input type="file" id="importFile" accept=".json" style="display: none;">
+
+    <script src="lib/js/bootstrap.bundle.min.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Templates Pro</title>
+    <link href="lib/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="lib/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            width: 650px;
+            min-height: auto;
+        }
+        #templatesContainer {
+            max-height: auto;
+            overflow-y: auto;
+        }
+        .template-item {
+            padding: 12px;
+            border-bottom: 1px solid #e9ecef;
+            transition: background-color 0.2s;
+        }
+        .template-item:hover {
+            background-color: #f8f9fa;
+        }
+        .template-item:last-child {
+            border-bottom: none;
+        }
+        .template-keyword {
+            display: inline-block;
+            background-color: #e7f3ff;
+            color: #0066cc;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .template-title {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 4px;
+        }
+        .template-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-3">
+        <!-- Encabezado -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0"><i class="bi bi-file-text"></i> Text Templates Pro</h5>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="openDashboardBtn" title="Abrir Dashboard">
+                <i class="bi bi-gear"></i>
+            </button>
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="mb-3">
+            <div class="input-group input-group-sm">
+                <span class="input-group-text bg-white border-end-0">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input 
+                    type="text" 
+                    class="form-control form-control-sm border-start-0" 
+                    id="searchInput" 
+                    placeholder="Buscar por título o palabra clave..."
+                >
+            </div>
+        </div>
+
+        <!-- Contenedor de plantillas -->
+        <div id="templatesContainer">
+            <div class="text-center text-muted py-4">
+                <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+                <p class="mt-2 small">No hay plantillas</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="lib/js/bootstrap.bundle.min.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
