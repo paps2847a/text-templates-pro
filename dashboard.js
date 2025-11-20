@@ -1,4 +1,5 @@
 // dashboard.js - Lógica del dashboard de gestión de plantillas
+//cambios en manifiestos
 
 let currentEditingId = null;
 let templates = [];
