@@ -1,5 +1,4 @@
 // dashboard.js - Lógica del dashboard de gestión de plantillas
-//cambios en manifiestos
 
 let currentEditingId = null;
 let templates = [];
@@ -258,7 +257,6 @@ function handleImportTemplates(event) {
     };
     reader.readAsText(file);
     importFileInput.value = '';
-    window.location.reload();
 }
 
 // Manejar eliminación de todas las plantillas
@@ -321,15 +319,11 @@ function saveTemplates() {
     chrome.storage.local.set({ templates }, () => {
         renderTemplates();
         // Notificar al content script que las plantillas han sido actualizadas
-        chrome.tabs.query({}, (tabs) => {
-            tabs.forEach(tab => {
-                chrome.tabs.sendMessage(tab.id, { 
-                    action: 'templatesUpdated', 
-                    templates 
-                }).catch(() => {
-                    // Ignorar errores si la pestaña no tiene el content script
-                });
-            });
+        chrome.runtime.sendMessage({ 
+            action: 'templatesUpdated', 
+            templates 
+        }).catch(() => {
+            // Ignorar errores si el content script no está disponible
         });
     });
 }

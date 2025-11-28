@@ -4,8 +4,14 @@
 
 ## Características
 
-*   **Reemplazo Inmediato por Defecto (v9):** El reemplazo de texto es **inmediato (0ms)** por defecto. El usuario puede activar y configurar un tiempo de espera (delay) si lo desea desde el Dashboard.
-*   **Popup Mejorado (v9):** El Popup es ahora **más ancho**, y la lista de plantillas es **scrollable** (máximo 500px de altura) con una visualización más clara de cada plantilla (título, palabra clave y descripción).
+*   **Optimización de Permisos (v12):**
+    *   **Permisos Mínimos:** Se han eliminado los permisos `tabs` y `activeTab` para cumplir con las políticas de la Chrome Web Store y mejorar la privacidad.
+    *   **Comunicación Optimizada:** La comunicación entre el Dashboard y el Content Script ahora utiliza `chrome.runtime.sendMessage` y el Dashboard se abre usando `chrome.runtime.openOptionsPage`.
+*   **Popup Optimizado:**
+    *   **Diseño de Cards:** Las plantillas se muestran como **cards discretas** y visualmente atractivas.
+    *   **Copiar al Portapapeles:** Al hacer clic en una plantilla en el Popup, su contenido se copia **automáticamente** al portapapeles.
+    *   **Scroll Único:** Se ha corregido el problema de la doble barra de desplazamiento para una interfaz más limpia.
+*   **Reemplazo Inmediato por Defecto:** El reemplazo de texto es **inmediato (0ms)** por defecto. El usuario puede activar y configurar un tiempo de espera (delay) si lo desea desde el Dashboard.
 *   **Reemplazo Robusto:** Lógica de detección y reemplazo de texto significativamente mejorada para funcionar de manera fiable en `textarea`, `input` y elementos `contenteditable`.
 *   **Manejo de Errores:** Notificación de error visible (roja) en caso de fallo en el proceso de reemplazo, deteniendo la operación para evitar problemas.
 *   **Recursos Locales:** Todos los recursos de Bootstrap (CSS, JS, Icons) se han descargado y se cargan localmente, asegurando el funcionamiento **sin conexión a internet**.
@@ -27,17 +33,26 @@ La extensión sigue la arquitectura estándar de Chrome Extension Manifest V3:
 
 | Archivo | Propósito |
 | :--- | :--- |
-| `manifest.json` | Archivo de configuración principal de la extensión (Manifest V3). |
-| `popup.html` | **Popup:** Interfaz ligera con buscador y lista de plantillas. **(Ancho y scroll mejorados)** |
-| `popup.js` | Lógica JavaScript para `popup.html`, incluyendo la búsqueda y la función para abrir el dashboard. **(Renderizado mejorado)** |
-| `dashboard.html` | **Dashboard:** Página completa para la gestión CRUD y configuración (se abre en una nueva pestaña). |
-| `dashboard.js` | Lógica JavaScript para `dashboard.html`, incluyendo la gestión de plantillas (CRUD), la funcionalidad de búsqueda y la interacción con `chrome.storage.local`. **(Control de delay)** |
+| `manifest.json` | Archivo de configuración principal de la extensión (Manifest V3). **Permisos reducidos a `storage` y `host_permissions`**. |
+| `popup.html` | **Popup:** Interfaz ligera con buscador y lista de plantillas. |
+| `popup.js` | Lógica JavaScript para `popup.html`, incluyendo la búsqueda, la función para abrir el dashboard (`chrome.runtime.openOptionsPage`) y la funcionalidad de copiar al portapapeles. |
+| `dashboard.html` | **Dashboard:** Página completa para la gestión CRUD y configuración (ahora como `options_page`). |
+| `dashboard.js` | Lógica JavaScript para `dashboard.html`, incluyendo la gestión de plantillas (CRUD), la funcionalidad de búsqueda y la comunicación con `content.js` a través de `chrome.runtime.sendMessage`. |
 | `styles.css` | Estilos CSS personalizados para ambas interfaces. |
-| `content.js` | Script de contenido inyectado en todas las páginas web para monitorear la entrada de texto y realizar el reemplazo de plantillas. **(Soporte para 0ms delay)** |
+| `content.js` | Script de contenido inyectado en todas las páginas web para monitorear la entrada de texto y realizar el reemplazo de plantillas. |
 | `background.js` | Service Worker que maneja eventos de fondo, como la instalación y la inicialización del almacenamiento. |
 | `welcome.html` | Página de bienvenida que se abre tras la primera instalación. |
 | `images/` | Contiene los iconos de la extensión. |
 | `lib/` | Contiene los archivos locales de Bootstrap (CSS, JS, Icons). |
+
+## Permisos Requeridos
+
+La extensión ahora solo requiere los siguientes permisos, los mínimos necesarios para su funcionalidad:
+
+| Permiso | Razón |
+| :--- | :--- |
+| **`storage`** | Para guardar tus plantillas y configuraciones de forma persistente. |
+| **`host_permissions`** (`<all_urls>`) | Para permitir que el código de reemplazo de texto se ejecute en los campos de texto de cualquier página web. |
 
 ## Instalación
 
@@ -57,7 +72,7 @@ Para instalar la extensión en Google Chrome:
 
 1.  Haz clic en el icono de la extensión en la barra de herramientas de Chrome.
 2.  Usa la barra de búsqueda para encontrar rápidamente la palabra clave de una plantilla.
-3.  El popup muestra las plantillas de forma clara para una referencia rápida.
+3.  **Haz clic en cualquier plantilla** para copiar su contenido al portapapeles.
 
 ### 2. Gestión Completa (Dashboard)
 

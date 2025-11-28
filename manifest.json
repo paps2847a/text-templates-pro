@@ -4,9 +4,7 @@
   "version": "1.0.0",
   "description": "Guarda, edita, lee y borra plantillas de texto. Usa /palabra para invocar plantillas automáticamente.",
   "permissions": [
-    "storage",
-    "activeTab",
-    "scripting"
+    "storage"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -26,6 +24,7 @@
     "default_popup": "popup.html",
     "default_title": "Text Templates Pro - Búsqueda Rápida"
   },
+  "options_page": "dashboard.html",
   "web_accessible_resources": [
     {
       "resources": ["dashboard.html"],

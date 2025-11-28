@@ -22,6 +22,14 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
     }
 });
 
+// Escuchar mensajes desde el dashboard
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'templatesUpdated') {
+        templates = request.templates || [];
+        sendResponse({ status: 'success' });
+    }
+});
+
 // Monitorear eventos de entrada de texto en el documento
 document.addEventListener('input', handleInput, true);
 document.addEventListener('keyup', handleKeyUp, true);

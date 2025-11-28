@@ -75,7 +75,7 @@ function handleSearch(e) {
 
 // Abrir dashboard
 function openDashboard() {
-    chrome.tabs.create({ url: chrome.runtime.getURL('dashboard.html') });
+    chrome.runtime.openOptionsPage();
 }
 
 // Escapar HTML
